@@ -3,54 +3,31 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>
-        Beto Guimarães 2040 | Deputado Federal
-    </title>
+    <title>Beto Guimarães 2040 | Deputado Federal</title>
 
     <meta
         name="description"
-        content="Beto Guimarães 2040. Deputado Federal por Minas Gerais."
+        content="Beto Guimarães 2040. Candidato a Deputado Federal por Minas Gerais."
     >
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
-
-    <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossorigin
-    >
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@500;600;700;800&display=swap"
         rel="stylesheet"
     >
 
-    <link
-        rel="stylesheet"
-        href="style.css"
-    >
+    <link rel="stylesheet" href="style.css">
 </head>
-
 
 <body>
 
-
-<!-- =====================================
-     HEADER
-===================================== -->
-
 <header class="header">
 
-    <a
-        href="#inicio"
-        class="logo"
-    >
+    <a href="#inicio" class="logo">
         BETO GUIMARÃES
     </a>
 
@@ -61,630 +38,577 @@
 </header>
 
 
-
 <main>
 
+    <!-- HERO -->
 
-<!-- =====================================
-     HERO / VÍDEO 1
-===================================== -->
+    <section class="hero video-section" id="inicio">
 
-<section
-    class="hero"
-    id="inicio"
->
-
-    <video
-        id="heroVideo"
-        class="scroll-video"
-        loop
-        playsinline
-        preload="metadata"
-    >
-        <source
-            src="beto-hero.mp4"
-            type="video/mp4"
+        <video
+            id="heroVideo"
+            class="scroll-video"
+            muted
+            loop
+            playsinline
+            preload="metadata"
         >
-    </video>
+            <source src="beto-hero.mp4" type="video/mp4">
+        </video>
+
+        <div class="hero-overlay"></div>
 
 
-    <div class="hero-overlay"></div>
+        <button
+            class="sound-button"
+            data-video="heroVideo"
+            type="button"
+        >
+            <span class="sound-dot"></span>
+            <span class="sound-text">ATIVAR SOM</span>
+        </button>
 
 
-    <div class="hero-content">
+        <div class="hero-content">
 
-        <div class="hero-top">
+            <div class="hero-top">
+
+                <span>
+                    MINAS GERAIS
+                </span>
+
+                <span>
+                    DEPUTADO FEDERAL
+                </span>
+
+            </div>
+
+
+            <div class="hero-bottom">
+
+                <div class="candidate">
+
+                    <p>
+                        BETO
+                    </p>
+
+                    <h1>
+                        GUIMARÃES
+                    </h1>
+
+                </div>
+
+
+                <div class="vote-number">
+
+                    <span>
+                        DEPUTADO FEDERAL
+                    </span>
+
+                    <strong>
+                        2040
+                    </strong>
+
+                </div>
+
+
+                <div class="hero-message">
+
+                    <p>
+                        Uma região unida<br>
+                        fala mais alto.
+                    </p>
+
+                    <span>
+                        ↓
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- QUEM É BETO -->
+
+    <section class="intro">
+
+        <div class="section-label">
+            01 — QUEM É BETO
+        </div>
+
+
+        <h2>
+            É DAQUI.<br>
+            CONHECE.<br>
+            SABE FAZER.
+        </h2>
+
+
+        <div class="intro-copy">
+
+            <p class="intro-highlight">
+                Uma trajetória construída perto das pessoas
+                e dos municípios da nossa região.
+            </p>
+
+            <p>
+                Beto Guimarães construiu sua trajetória
+                política e profissional em Minas Gerais.
+            </p>
+
+            <p>
+                Foi técnico agrícola, empresário, vereador,
+                presidente da Câmara e prefeito por três mandatos.
+            </p>
+
+            <p>
+                Uma experiência construída entre gestão pública,
+                articulação regional e presença nos municípios.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- NÚMEROS -->
+
+    <section class="numbers">
+
+        <div class="number-item">
+
+            <span>3×</span>
+
+            <p>
+                prefeito de<br>
+                São José do Goiabal
+            </p>
+
+        </div>
+
+
+        <div class="number-item">
+
+            <span>12</span>
+
+            <p>
+                anos à frente<br>
+                da gestão municipal
+            </p>
+
+        </div>
+
+
+        <div class="number-item">
+
+            <span>46</span>
+
+            <p>
+                municípios reunidos em associações
+                e consórcios regionais que liderou
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- TRAJETÓRIA -->
+
+    <section class="trajectory">
+
+        <div class="trajectory-header">
+
+            <span>
+                02 — TRAJETÓRIA
+            </span>
+
+            <span>
+                GESTÃO + PRESENÇA
+            </span>
+
+        </div>
+
+
+        <div class="portrait-video video-container">
+
+            <video
+                id="trajectoryVideo"
+                class="scroll-video"
+                muted
+                loop
+                playsinline
+                preload="metadata"
+            >
+                <source
+                    src="beto-trajetoria.mp4"
+                    type="video/mp4"
+                >
+            </video>
+
+
+            <button
+                class="sound-button media-sound"
+                data-video="trajectoryVideo"
+                type="button"
+            >
+                <span class="sound-dot"></span>
+                <span class="sound-text">ATIVAR SOM</span>
+            </button>
+
+        </div>
+
+
+        <div class="trajectory-copy">
+
+            <h2>
+                POLÍTICA<br>
+                PERTO DAS<br>
+                PESSOAS.
+            </h2>
+
+            <p>
+                Conhecer uma região não é apenas saber
+                onde cada cidade fica no mapa. É conhecer
+                suas estradas, seus hospitais, produtores,
+                trabalhadores e famílias.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- FRASE -->
+
+    <section class="statement">
+
+        <div class="statement-number">
+            2040
+        </div>
+
+        <span>
+            REPRESENTAÇÃO REGIONAL
+        </span>
+
+
+        <h2>
+            OS PROBLEMAS<br>
+            NÃO TERMINAM<br>
+            NA DIVISA<br>
+            DE UMA CIDADE.
+        </h2>
+
+    </section>
+
+
+    <!-- REGIÃO -->
+
+    <section class="region">
+
+        <div class="section-label">
+            03 — NOSSA REGIÃO
+        </div>
+
+
+        <h2>
+            JUNTOS,<br>
+            CHEGAMOS<br>
+            MAIS LONGE.
+        </h2>
+
+
+        <div class="region-copy">
+
+            <p>
+                Estradas, hospitais, empregos,
+                produção rural e desenvolvimento
+                conectam nossos municípios.
+            </p>
+
+            <p>
+                Quando uma região trabalha em conjunto,
+                suas demandas chegam com mais força
+                onde as grandes decisões são tomadas.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- VÍDEO REGIÃO -->
+
+    <section class="wide-video video-section">
+
+        <video
+            id="regionVideo"
+            class="scroll-video"
+            muted
+            loop
+            playsinline
+            preload="metadata"
+        >
+            <source
+                src="beto-regiao.mp4"
+                type="video/mp4"
+            >
+        </video>
+
+
+        <div class="wide-overlay"></div>
+
+
+        <button
+            class="sound-button media-sound"
+            data-video="regionVideo"
+            type="button"
+        >
+            <span class="sound-dot"></span>
+            <span class="sound-text">ATIVAR SOM</span>
+        </button>
+
+
+        <div class="wide-copy">
+
+            <p>
+                MÉDIO PIRACICABA<br>
+                + VALE DO PIRANGA
+            </p>
+
+            <h2>
+                É<br>
+                DAQUI.
+            </h2>
+
+        </div>
+
+    </section>
+
+
+    <!-- PAUTAS -->
+
+    <section class="issues" id="pautas">
+
+        <div class="section-label">
+            04 — PRIORIDADES
+        </div>
+
+
+        <div class="issues-heading">
+
+            <h2>
+                O QUE<br>
+                IMPORTA.
+            </h2>
+
+            <p>
+                Pautas que atravessam municípios
+                e fazem diferença na vida das pessoas.
+            </p>
+
+        </div>
+
+
+        <div class="issues-list">
+
+            <article>
+
+                <span>01</span>
+
+                <div>
+                    <h3>Estradas</h3>
+
+                    <p>
+                        Infraestrutura e melhorias nas rodovias
+                        importantes para moradores, trabalhadores
+                        e para a economia regional.
+                    </p>
+                </div>
+
+            </article>
+
+
+            <article>
+
+                <span>02</span>
+
+                <div>
+                    <h3>Saúde</h3>
+
+                    <p>
+                        Fortalecimento dos hospitais,
+                        atendimento regional e cooperação
+                        entre os municípios.
+                    </p>
+                </div>
+
+            </article>
+
+
+            <article>
+
+                <span>03</span>
+
+                <div>
+                    <h3>Juventude</h3>
+
+                    <p>
+                        Educação técnica e oportunidades
+                        para quem quer construir
+                        seu futuro na região.
+                    </p>
+                </div>
+
+            </article>
+
+
+            <article>
+
+                <span>04</span>
+
+                <div>
+                    <h3>Produtor rural</h3>
+
+                    <p>
+                        Desenvolvimento do campo,
+                        melhores condições para produzir
+                        e menos burocracia.
+                    </p>
+                </div>
+
+            </article>
+
+        </div>
+
+    </section>
+
+
+    <!-- BLOCO 2040 -->
+
+    <section class="vote">
+
+        <div class="vote-small">
+            PARA DEPUTADO FEDERAL
+        </div>
+
+        <div class="vote-name">
+            BETO GUIMARÃES
+        </div>
+
+        <div class="vote-big">
+            2040
+        </div>
+
+        <div class="vote-footer">
 
             <span>
                 MINAS GERAIS
             </span>
 
             <span>
-                DEPUTADO FEDERAL
+                PODEMOS
             </span>
 
         </div>
 
-
-        <div class="hero-bottom">
-
-            <div class="candidate">
-
-                <p>
-                    BETO
-                </p>
-
-                <h1>
-                    GUIMARÃES
-                </h1>
-
-            </div>
+    </section>
 
 
-            <div class="hero-number">
+    <!-- FINAL -->
 
-                <span>
-                    DEPUTADO<br>
-                    FEDERAL
-                </span>
-
-                <strong>
-                    2040
-                </strong>
-
-            </div>
-
-
-            <div class="hero-message">
-
-                <p>
-                    Uma região unida<br>
-                    fala mais alto.
-                </p>
-
-                <span>
-                    ↓
-                </span>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-
-<!-- =====================================
-     QUEM É BETO
-===================================== -->
-
-<section class="intro">
-
-    <p class="section-label">
-        01 — QUEM É BETO
-    </p>
-
-
-    <h2>
-        É DAQUI.<br>
-        CONHECE.<br>
-        SABE FAZER.
-    </h2>
-
-
-    <div class="intro-copy">
-
-        <p class="intro-highlight">
-            Uma trajetória construída perto das
-            pessoas e dos municípios da nossa região.
-        </p>
-
-        <p>
-            Beto Guimarães nasceu e construiu
-            sua vida em São José do Goiabal.
-        </p>
-
-        <p>
-            Foi técnico agrícola, empresário,
-            vereador, presidente da Câmara e
-            prefeito por três mandatos.
-        </p>
-
-        <p>
-            Uma experiência construída entre
-            gestão pública, articulação regional
-            e presença nos municípios.
-        </p>
-
-    </div>
-
-</section>
-
-
-
-<!-- =====================================
-     NÚMEROS
-===================================== -->
-
-<section class="numbers">
-
-    <article class="number-item">
-
-        <strong>
-            3×
-        </strong>
-
-        <p>
-            prefeito de<br>
-            São José do Goiabal
-        </p>
-
-    </article>
-
-
-    <article class="number-item">
-
-        <strong>
-            12
-        </strong>
-
-        <p>
-            anos à frente<br>
-            da gestão municipal
-        </p>
-
-    </article>
-
-
-    <article class="number-item">
-
-        <strong>
-            46
-        </strong>
-
-        <p>
-            municípios reunidos em associações
-            e consórcios regionais que liderou
-        </p>
-
-    </article>
-
-</section>
-
-
-
-<!-- =====================================
-     TRAJETÓRIA / VÍDEO 2
-===================================== -->
-
-<section class="trajectory">
-
-    <div class="trajectory-header">
-
-        <span>
-            02 — TRAJETÓRIA
-        </span>
-
-        <span>
-            GESTÃO + PRESENÇA
-        </span>
-
-    </div>
-
-
-    <div class="portrait-video">
+    <section class="final video-section">
 
         <video
-            id="trajectoryVideo"
+            id="finalVideo"
             class="scroll-video"
+            muted
             loop
             playsinline
             preload="metadata"
         >
             <source
-                src="beto-trajetoria.mp4"
+                src="beto-final.mp4"
                 type="video/mp4"
             >
         </video>
 
-    </div>
+
+        <div class="final-overlay"></div>
 
 
-    <div class="trajectory-copy">
-
-        <h2>
-            POLÍTICA<br>
-            PERTO DAS<br>
-            PESSOAS.
-        </h2>
-
-
-        <p>
-            Conhecer uma região não é apenas
-            saber onde cada cidade fica no mapa.
-            É conhecer suas estradas, seus hospitais,
-            produtores, trabalhadores e famílias.
-        </p>
-
-    </div>
-
-</section>
-
-
-
-<!-- =====================================
-     REPRESENTAÇÃO
-===================================== -->
-
-<section class="statement">
-
-    <div class="statement-background">
-        2040
-    </div>
-
-
-    <p>
-        REPRESENTAÇÃO REGIONAL
-    </p>
-
-
-    <h2>
-        OS PROBLEMAS<br>
-        NÃO TERMINAM<br>
-        NA DIVISA<br>
-        DE UMA CIDADE.
-    </h2>
-
-</section>
-
-
-
-<!-- =====================================
-     REGIÃO
-===================================== -->
-
-<section class="region">
-
-    <p class="section-label">
-        03 — NOSSA REGIÃO
-    </p>
-
-
-    <h2>
-        JUNTOS,<br>
-        CHEGAMOS<br>
-        MAIS LONGE.
-    </h2>
-
-
-    <div class="region-copy">
-
-        <p>
-            Estradas, hospitais, empregos,
-            produção rural e desenvolvimento
-            conectam nossos municípios.
-        </p>
-
-        <p>
-            Quando uma região trabalha em conjunto,
-            suas demandas chegam com mais força
-            onde as grandes decisões são tomadas.
-        </p>
-
-    </div>
-
-</section>
-
-
-
-<!-- =====================================
-     REGIÃO / VÍDEO 3
-===================================== -->
-
-<section class="region-video">
-
-    <video
-        id="regionVideo"
-        class="scroll-video"
-        loop
-        playsinline
-        preload="metadata"
-    >
-        <source
-            src="beto-regiao.mp4"
-            type="video/mp4"
+        <button
+            class="sound-button"
+            data-video="finalVideo"
+            type="button"
         >
-    </video>
+            <span class="sound-dot"></span>
+            <span class="sound-text">ATIVAR SOM</span>
+        </button>
 
 
-    <div class="video-overlay"></div>
+        <div class="final-content">
 
+            <p>
+                DEPUTADO FEDERAL · MINAS GERAIS
+            </p>
 
-    <div class="region-video-content">
-
-        <p>
-            MÉDIO PIRACICABA<br>
-            + VALE DO PIRANGA
-        </p>
-
-
-        <h2>
-            É<br>
-            DAQUI.
-        </h2>
-
-    </div>
-
-</section>
-
-
-
-<!-- =====================================
-     PRIORIDADES
-===================================== -->
-
-<section
-    class="issues"
-    id="pautas"
->
-
-    <p class="section-label">
-        04 — PRIORIDADES
-    </p>
-
-
-    <div class="issues-heading">
-
-        <h2>
-            O QUE<br>
-            IMPORTA.
-        </h2>
-
-        <p>
-            Pautas que atravessam municípios
-            e fazem diferença na vida das pessoas.
-        </p>
-
-    </div>
-
-
-    <div class="issues-list">
-
-
-        <article>
-
-            <span>
-                01
-            </span>
 
             <div>
 
-                <h3>
-                    Estradas
-                </h3>
+                <h2>
+                    BETO<br>
+                    GUIMARÃES
+                </h2>
 
-                <p>
-                    Infraestrutura e melhorias nas
-                    rodovias importantes para moradores,
-                    trabalhadores e para a economia regional.
-                </p>
 
-            </div>
+                <div class="final-number">
+                    2040
+                </div>
 
-        </article>
 
+                <div class="final-line">
 
+                    <span>
+                        UMA REGIÃO UNIDA FALA MAIS ALTO.
+                    </span>
 
-        <article>
+                    <a href="#inicio">
+                        ↑
+                    </a>
 
-            <span>
-                02
-            </span>
-
-            <div>
-
-                <h3>
-                    Saúde
-                </h3>
-
-                <p>
-                    Fortalecimento dos hospitais,
-                    atendimento regional e cooperação
-                    entre os municípios.
-                </p>
-
-            </div>
-
-        </article>
-
-
-
-        <article>
-
-            <span>
-                03
-            </span>
-
-            <div>
-
-                <h3>
-                    Juventude
-                </h3>
-
-                <p>
-                    Educação técnica e oportunidades
-                    para quem quer construir seu futuro
-                    na região.
-                </p>
-
-            </div>
-
-        </article>
-
-
-
-        <article>
-
-            <span>
-                04
-            </span>
-
-            <div>
-
-                <h3>
-                    Produtor rural
-                </h3>
-
-                <p>
-                    Desenvolvimento do campo,
-                    melhores condições para produzir
-                    e menos burocracia.
-                </p>
-
-            </div>
-
-        </article>
-
-
-    </div>
-
-</section>
-
-
-
-<!-- =====================================
-     2040
-===================================== -->
-
-<section class="vote">
-
-    <p class="vote-label">
-        PARA DEPUTADO FEDERAL
-    </p>
-
-
-    <h2>
-        BETO GUIMARÃES
-    </h2>
-
-
-    <div class="vote-number">
-        2040
-    </div>
-
-
-    <div class="vote-bottom">
-
-        <span>
-            MINAS GERAIS
-        </span>
-
-        <span>
-            PODEMOS
-        </span>
-
-    </div>
-
-</section>
-
-
-
-<!-- =====================================
-     FINAL / VÍDEO 4
-===================================== -->
-
-<section class="final">
-
-    <video
-        id="finalVideo"
-        class="scroll-video"
-        loop
-        playsinline
-        preload="metadata"
-    >
-        <source
-            src="beto-final.mp4"
-            type="video/mp4"
-        >
-    </video>
-
-
-    <div class="final-overlay"></div>
-
-
-    <div class="final-content">
-
-        <p class="final-label">
-            DEPUTADO FEDERAL · MINAS GERAIS
-        </p>
-
-
-        <div class="final-bottom">
-
-            <h2>
-                BETO<br>
-                GUIMARÃES
-            </h2>
-
-
-            <strong>
-                2040
-            </strong>
-
-
-            <div class="final-message">
-
-                <span>
-                    UMA REGIÃO UNIDA
-                    FALA MAIS ALTO.
-                </span>
-
-                <a href="#inicio">
-                    ↑
-                </a>
+                </div>
 
             </div>
 
         </div>
 
-    </div>
-
-</section>
-
+    </section>
 
 </main>
 
 
-
-<!-- =====================================
-     FOOTER
-===================================== -->
-
 <footer>
 
-    <div>
-        <strong>
-            BETO GUIMARÃES
-        </strong>
-
-        <span>
-            DEPUTADO FEDERAL
-        </span>
-    </div>
-
+    <strong>
+        BETO GUIMARÃES
+    </strong>
 
     <strong class="footer-number">
         2040
     </strong>
 
-</footer>
+    <span>
+        DEPUTADO FEDERAL
+    </span>
 
+</footer>
 
 
 <script src="script.js"></script>
 
 </body>
-
 </html>
