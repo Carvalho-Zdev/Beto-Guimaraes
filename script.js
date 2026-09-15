@@ -1,60 +1,24 @@
 /* =========================================
    BETO GUIMARÃES 2040
-   SISTEMA AUTOMÁTICO DE VÍDEOS
+   CONTROLE AUTOMÁTICO DOS VÍDEOS
 ========================================= */
 
 const videos = document.querySelectorAll(".scroll-video");
-const soundButtons = document.querySelectorAll(".sound-button");
 
 let activeVideo = null;
-let soundEnabled = false;
+let audioUnlocked = false;
 
 
 /* =========================================
-   ATUALIZA BOTÕES
+   PARAR TODOS OS OUTROS VÍDEOS
 ========================================= */
 
-function updateSoundButtons() {
-
-    soundButtons.forEach((button) => {
-
-        const text =
-            button.querySelector(".sound-text");
-
-        if (!text) return;
-
-
-        if (soundEnabled) {
-
-            text.textContent =
-                "SOM ATIVADO";
-
-        } else {
-
-            text.textContent =
-                "ATIVAR SOM";
-
-        }
-
-    });
-
-}
-
-
-/* =========================================
-   PAUSA TODOS OS OUTROS
-========================================= */
-
-function pauseOtherVideos(currentVideo) {
+function stopOtherVideos(currentVideo) {
 
     videos.forEach((video) => {
 
         if (video !== currentVideo) {
-
             video.pause();
-
-            video.muted = true;
-
         }
 
     });
@@ -63,35 +27,38 @@ function pauseOtherVideos(currentVideo) {
 
 
 /* =========================================
-   ATIVA UM VÍDEO
+   ATIVAR VÍDEO
 ========================================= */
 
 function activateVideo(video) {
 
     if (!video) return;
 
+    if (activeVideo === video && !video.paused) {
+        return;
+    }
 
-    pauseOtherVideos(video);
-
+    stopOtherVideos(video);
 
     activeVideo = video;
 
+    /*
+       O site sempre tenta reproduzir
+       com áudio.
+    */
 
-    video.muted = !soundEnabled;
+    video.muted = false;
 
+    const playPromise = video.play();
 
-    const promise =
-        video.play();
+    if (playPromise !== undefined) {
 
-
-    if (promise !== undefined) {
-
-        promise.catch(() => {
+        playPromise.catch(() => {
 
             /*
-            Se o navegador bloquear
-            autoplay com áudio,
-            começa sem áudio.
+               Se o navegador bloquear autoplay
+               com áudio, começa temporariamente
+               sem áudio.
             */
 
             video.muted = true;
@@ -106,53 +73,97 @@ function activateVideo(video) {
 
 
 /* =========================================
-   ENCONTRA O VÍDEO MAIS VISÍVEL
+   LIBERAR ÁUDIO APÓS INTERAÇÃO
+========================================= */
+
+function unlockAudio() {
+
+    audioUnlocked = true;
+
+    if (activeVideo) {
+
+        activeVideo.muted = false;
+
+        activeVideo.play().catch(() => {});
+
+    }
+
+}
+
+
+/*
+   Depois do primeiro toque/clique,
+   tentamos manter áudio nos próximos vídeos.
+*/
+
+document.addEventListener(
+    "pointerdown",
+    unlockAudio,
+    { once: true }
+);
+
+document.addEventListener(
+    "touchstart",
+    unlockAudio,
+    {
+        once: true,
+        passive: true
+    }
+);
+
+document.addEventListener(
+    "click",
+    unlockAudio,
+    { once: true }
+);
+
+
+/* =========================================
+   CALCULAR QUANTO DO VÍDEO ESTÁ VISÍVEL
+========================================= */
+
+function getVisiblePercentage(video) {
+
+    const rect = video.getBoundingClientRect();
+
+    const visibleTop =
+        Math.max(rect.top, 0);
+
+    const visibleBottom =
+        Math.min(
+            rect.bottom,
+            window.innerHeight
+        );
+
+    const visibleHeight =
+        Math.max(
+            0,
+            visibleBottom - visibleTop
+        );
+
+    return visibleHeight / rect.height;
+
+}
+
+
+/* =========================================
+   DESCOBRIR QUAL VÍDEO ESTÁ MAIS VISÍVEL
 ========================================= */
 
 function findMostVisibleVideo() {
 
     let bestVideo = null;
-
-    let bestVisibleAmount = 0;
-
+    let bestPercentage = 0;
 
     videos.forEach((video) => {
 
-        const rect =
-            video.getBoundingClientRect();
-
-
-        const visibleTop =
-            Math.max(rect.top, 0);
-
-
-        const visibleBottom =
-            Math.min(
-                rect.bottom,
-                window.innerHeight
-            );
-
-
-        const visibleHeight =
-            Math.max(
-                0,
-                visibleBottom - visibleTop
-            );
-
-
         const percentage =
-            visibleHeight / rect.height;
+            getVisiblePercentage(video);
 
+        if (percentage > bestPercentage) {
 
-        if (
-            percentage > bestVisibleAmount
-        ) {
-
-            bestVisibleAmount =
-                percentage;
-
-            bestVideo =
-                video;
+            bestPercentage = percentage;
+            bestVideo = video;
 
         }
 
@@ -160,34 +171,27 @@ function findMostVisibleVideo() {
 
 
     /*
-    Só troca quando pelo menos
-    35% do vídeo estiver visível.
+       Quando pelo menos 35% do vídeo
+       estiver visível, ele começa.
     */
 
     if (
         bestVideo &&
-        bestVisibleAmount >= 0.35
+        bestPercentage >= 0.35
     ) {
 
-        if (
-            activeVideo !== bestVideo
-        ) {
-
-            activateVideo(bestVideo);
-
-        }
+        activateVideo(bestVideo);
 
     } else {
 
         /*
-        Nenhum vídeo suficientemente
-        visível = pausa.
+           Entrou numa parte da página
+           sem vídeo.
         */
 
         if (activeVideo) {
 
             activeVideo.pause();
-
             activeVideo = null;
 
         }
@@ -203,19 +207,16 @@ function findMostVisibleVideo() {
 
 let scrollTimer = null;
 
-
 window.addEventListener(
     "scroll",
     () => {
 
         clearTimeout(scrollTimer);
 
-
-        scrollTimer =
-            setTimeout(
-                findMostVisibleVideo,
-                60
-            );
+        scrollTimer = setTimeout(
+            findMostVisibleVideo,
+            50
+        );
 
     },
     {
@@ -235,47 +236,7 @@ window.addEventListener(
 
 
 /* =========================================
-   ATIVAR / DESATIVAR SOM
-========================================= */
-
-soundButtons.forEach((button) => {
-
-    button.addEventListener(
-        "click",
-        () => {
-
-            soundEnabled =
-                !soundEnabled;
-
-
-            /*
-            Se temos um vídeo ativo,
-            muda o som imediatamente.
-            */
-
-            if (activeVideo) {
-
-                activeVideo.muted =
-                    !soundEnabled;
-
-
-                activeVideo
-                    .play()
-                    .catch(() => {});
-
-            }
-
-
-            updateSoundButtons();
-
-        }
-    );
-
-});
-
-
-/* =========================================
-   PAUSA SE SAIR DA ABA
+   TROCA DE ABA
 ========================================= */
 
 document.addEventListener(
@@ -284,11 +245,9 @@ document.addEventListener(
 
         if (document.hidden) {
 
-            videos.forEach(
-                (video) => {
-                    video.pause();
-                }
-            );
+            videos.forEach((video) => {
+                video.pause();
+            });
 
         } else {
 
@@ -301,11 +260,8 @@ document.addEventListener(
 
 
 /* =========================================
-   INÍCIO
+   CARREGAMENTO
 ========================================= */
-
-updateSoundButtons();
-
 
 window.addEventListener(
     "load",
