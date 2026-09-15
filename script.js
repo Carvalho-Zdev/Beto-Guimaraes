@@ -1,19 +1,20 @@
 /* =========================================
    BETO GUIMARÃES 2040
-   CONTROLE AUTOMÁTICO DOS VÍDEOS
+   VÍDEOS AUTOMÁTICOS + ÁUDIO APÓS 1º TOQUE
 ========================================= */
 
 const videos = document.querySelectorAll(".scroll-video");
 
 let activeVideo = null;
 let audioUnlocked = false;
+let scrollTimer = null;
 
 
 /* =========================================
-   PARAR TODOS OS OUTROS VÍDEOS
+   PAUSAR OS OUTROS VÍDEOS
 ========================================= */
 
-function stopOtherVideos(currentVideo) {
+function pauseOtherVideos(currentVideo) {
 
     videos.forEach((video) => {
 
@@ -27,45 +28,62 @@ function stopOtherVideos(currentVideo) {
 
 
 /* =========================================
-   ATIVAR VÍDEO
+   REPRODUZIR VÍDEO ATIVO
 ========================================= */
 
-function activateVideo(video) {
+async function playActiveVideo(video) {
 
     if (!video) return;
 
-    if (activeVideo === video && !video.paused) {
-        return;
-    }
-
-    stopOtherVideos(video);
+    pauseOtherVideos(video);
 
     activeVideo = video;
 
+
     /*
-       O site sempre tenta reproduzir
-       com áudio.
+       Depois do primeiro toque:
+       áudio sempre ligado.
     */
 
-    video.muted = false;
+    if (audioUnlocked) {
 
-    const playPromise = video.play();
+        video.muted = false;
 
-    if (playPromise !== undefined) {
+        try {
 
-        playPromise.catch(() => {
+            await video.play();
 
-            /*
-               Se o navegador bloquear autoplay
-               com áudio, começa temporariamente
-               sem áudio.
-            */
+        } catch (error) {
 
-            video.muted = true;
+            console.log(
+                "O navegador bloqueou a reprodução:",
+                error
+            );
 
-            video.play().catch(() => {});
+        }
 
-        });
+        return;
+    }
+
+
+    /*
+       Antes do primeiro toque:
+       começa mudo porque os navegadores
+       normalmente bloqueiam autoplay com áudio.
+    */
+
+    video.muted = true;
+
+    try {
+
+        await video.play();
+
+    } catch (error) {
+
+        console.log(
+            "Autoplay bloqueado:",
+            error
+        );
 
     }
 
@@ -73,18 +91,38 @@ function activateVideo(video) {
 
 
 /* =========================================
-   LIBERAR ÁUDIO APÓS INTERAÇÃO
+   PRIMEIRO TOQUE LIBERA O ÁUDIO
 ========================================= */
 
 function unlockAudio() {
 
+    if (audioUnlocked) return;
+
     audioUnlocked = true;
+
+
+    /*
+       Garante que todos os próximos vídeos
+       estarão configurados para usar áudio.
+    */
+
+    videos.forEach((video) => {
+        video.muted = false;
+    });
+
+
+    /*
+       Liga imediatamente o áudio
+       do vídeo que está aparecendo.
+    */
 
     if (activeVideo) {
 
         activeVideo.muted = false;
 
-        activeVideo.play().catch(() => {});
+        activeVideo
+            .play()
+            .catch(() => {});
 
     }
 
@@ -92,8 +130,11 @@ function unlockAudio() {
 
 
 /*
-   Depois do primeiro toque/clique,
-   tentamos manter áudio nos próximos vídeos.
+   pointerdown funciona com:
+   mouse, toque e caneta.
+
+   Basta UMA interação em qualquer
+   lugar da página.
 */
 
 document.addEventListener(
@@ -102,32 +143,23 @@ document.addEventListener(
     { once: true }
 );
 
-document.addEventListener(
-    "touchstart",
-    unlockAudio,
-    {
-        once: true,
-        passive: true
-    }
-);
-
-document.addEventListener(
-    "click",
-    unlockAudio,
-    { once: true }
-);
-
 
 /* =========================================
-   CALCULAR QUANTO DO VÍDEO ESTÁ VISÍVEL
+   CALCULAR VISIBILIDADE DO VÍDEO
 ========================================= */
 
 function getVisiblePercentage(video) {
 
-    const rect = video.getBoundingClientRect();
+    const rect =
+        video.getBoundingClientRect();
+
 
     const visibleTop =
-        Math.max(rect.top, 0);
+        Math.max(
+            rect.top,
+            0
+        );
+
 
     const visibleBottom =
         Math.min(
@@ -135,11 +167,18 @@ function getVisiblePercentage(video) {
             window.innerHeight
         );
 
+
     const visibleHeight =
         Math.max(
             0,
             visibleBottom - visibleTop
         );
+
+
+    if (rect.height <= 0) {
+        return 0;
+    }
+
 
     return visibleHeight / rect.height;
 
@@ -147,7 +186,7 @@ function getVisiblePercentage(video) {
 
 
 /* =========================================
-   DESCOBRIR QUAL VÍDEO ESTÁ MAIS VISÍVEL
+   DESCOBRIR O VÍDEO MAIS VISÍVEL
 ========================================= */
 
 function findMostVisibleVideo() {
@@ -155,10 +194,12 @@ function findMostVisibleVideo() {
     let bestVideo = null;
     let bestPercentage = 0;
 
+
     videos.forEach((video) => {
 
         const percentage =
             getVisiblePercentage(video);
+
 
         if (percentage > bestPercentage) {
 
@@ -171,8 +212,8 @@ function findMostVisibleVideo() {
 
 
     /*
-       Quando pelo menos 35% do vídeo
-       estiver visível, ele começa.
+       35% visível:
+       vídeo assume a reprodução.
     */
 
     if (
@@ -180,21 +221,30 @@ function findMostVisibleVideo() {
         bestPercentage >= 0.35
     ) {
 
-        activateVideo(bestVideo);
+        if (
+            activeVideo !== bestVideo ||
+            bestVideo.paused
+        ) {
 
-    } else {
-
-        /*
-           Entrou numa parte da página
-           sem vídeo.
-        */
-
-        if (activeVideo) {
-
-            activeVideo.pause();
-            activeVideo = null;
+            playActiveVideo(bestVideo);
 
         }
+
+        return;
+
+    }
+
+
+    /*
+       Nenhum vídeo está suficientemente
+       visível = pausa o vídeo anterior.
+    */
+
+    if (activeVideo) {
+
+        activeVideo.pause();
+
+        activeVideo = null;
 
     }
 
@@ -205,17 +255,16 @@ function findMostVisibleVideo() {
    SCROLL
 ========================================= */
 
-let scrollTimer = null;
-
 window.addEventListener(
     "scroll",
     () => {
 
         clearTimeout(scrollTimer);
 
+
         scrollTimer = setTimeout(
             findMostVisibleVideo,
-            50
+            40
         );
 
     },
@@ -236,7 +285,7 @@ window.addEventListener(
 
 
 /* =========================================
-   TROCA DE ABA
+   QUANDO SAI DA ABA
 ========================================= */
 
 document.addEventListener(
@@ -249,18 +298,19 @@ document.addEventListener(
                 video.pause();
             });
 
-        } else {
-
-            findMostVisibleVideo();
+            return;
 
         }
+
+
+        findMostVisibleVideo();
 
     }
 );
 
 
 /* =========================================
-   CARREGAMENTO
+   CARREGAMENTO INICIAL
 ========================================= */
 
 window.addEventListener(
@@ -269,7 +319,7 @@ window.addEventListener(
 
         setTimeout(
             findMostVisibleVideo,
-            300
+            250
         );
 
     }
