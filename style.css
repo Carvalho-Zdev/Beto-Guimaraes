@@ -1254,3 +1254,52 @@ footer strong {
             max(40px,calc((100vw - 1250px)/2));
     }
 }
+
+/* =========================================
+   BOTÃO ÚNICO — ATIVAR SOM
+========================================= */
+
+#audioUnlock {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 50;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 18px 28px;
+
+    background: rgba(0, 0, 0, 0.82);
+    color: #ffffff;
+
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    border-radius: 999px;
+
+    font: inherit;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+
+    transition:
+        transform 0.2s ease,
+        opacity 0.3s ease;
+}
+
+#audioUnlock .audio-icon {
+    font-size: 24px;
+}
+
+#audioUnlock:hover {
+    transform: translate(-50%, -50%) scale(1.05);
+}
+
+#audioUnlock.audio-active {
+    opacity: 0;
+    pointer-events: none;
+}

@@ -5,6 +5,7 @@
 
 const videos = document.querySelectorAll(".scroll-video");
 const soundButtons = document.querySelectorAll(".sound-button");
+const audioUnlockButton = document.getElementById("audioUnlock");
 
 let activeVideo = null;
 let soundEnabled = false;
@@ -96,12 +97,6 @@ function unlockSound() {
 
     soundEnabled = true;
 
-
-    /*
-       O vídeo que estiver ativo
-       recebe áudio imediatamente.
-    */
-
     if (activeVideo) {
 
         activeVideo.muted = false;
@@ -112,8 +107,22 @@ function unlockSound() {
 
     }
 
-}
+    /*
+       Esconde o botão depois
+       que o áudio for liberado.
+    */
 
+    if (audioUnlockButton) {
+
+        audioUnlockButton.classList.add("audio-active");
+
+        setTimeout(() => {
+            audioUnlockButton.style.display = "none";
+        }, 300);
+
+    }
+
+}
 
 /*
    Um único toque/clique em qualquer
