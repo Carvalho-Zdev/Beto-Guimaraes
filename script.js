@@ -11,34 +11,12 @@ let soundEnabled = false;
 
 
 /* =========================================
-   ATUALIZA BOTÕES
+   ESCONDE OS BOTÕES DE SOM
 ========================================= */
 
-function updateSoundButtons() {
-
-    soundButtons.forEach((button) => {
-
-        const text =
-            button.querySelector(".sound-text");
-
-        if (!text) return;
-
-
-        if (soundEnabled) {
-
-            text.textContent =
-                "SOM ATIVADO";
-
-        } else {
-
-            text.textContent =
-                "ATIVAR SOM";
-
-        }
-
-    });
-
-}
+soundButtons.forEach((button) => {
+    button.style.display = "none";
+});
 
 
 /* =========================================
@@ -52,8 +30,6 @@ function pauseOtherVideos(currentVideo) {
         if (video !== currentVideo) {
 
             video.pause();
-
-            video.muted = true;
 
         }
 
@@ -70,18 +46,23 @@ function activateVideo(video) {
 
     if (!video) return;
 
-
     pauseOtherVideos(video);
-
 
     activeVideo = video;
 
 
+    /*
+       Antes da primeira interação:
+       começa mudo para permitir autoplay.
+
+       Depois da primeira interação:
+       entra com áudio.
+    */
+
     video.muted = !soundEnabled;
 
 
-    const promise =
-        video.play();
+    const promise = video.play();
 
 
     if (promise !== undefined) {
@@ -89,9 +70,9 @@ function activateVideo(video) {
         promise.catch(() => {
 
             /*
-            Se o navegador bloquear
-            autoplay com áudio,
-            começa sem áudio.
+               Se o navegador ainda bloquear
+               a reprodução com áudio,
+               tenta iniciar mudo.
             */
 
             video.muted = true;
@@ -103,6 +84,67 @@ function activateVideo(video) {
     }
 
 }
+
+
+/* =========================================
+   PRIMEIRO TOQUE / CLIQUE LIBERA O SOM
+========================================= */
+
+function unlockSound() {
+
+    if (soundEnabled) return;
+
+    soundEnabled = true;
+
+
+    /*
+       O vídeo que estiver ativo
+       recebe áudio imediatamente.
+    */
+
+    if (activeVideo) {
+
+        activeVideo.muted = false;
+
+        activeVideo
+            .play()
+            .catch(() => {});
+
+    }
+
+}
+
+
+/*
+   Um único toque/clique em qualquer
+   lugar da página libera o áudio.
+
+   pointerdown funciona com:
+   - mouse
+   - touchscreen
+   - caneta
+*/
+
+document.addEventListener(
+    "pointerdown",
+    unlockSound,
+    { once: true }
+);
+
+
+/*
+   Fallback específico para alguns
+   navegadores móveis.
+*/
+
+document.addEventListener(
+    "touchstart",
+    unlockSound,
+    {
+        once: true,
+        passive: true
+    }
+);
 
 
 /* =========================================
@@ -141,7 +183,9 @@ function findMostVisibleVideo() {
 
 
         const percentage =
-            visibleHeight / rect.height;
+            rect.height > 0
+                ? visibleHeight / rect.height
+                : 0;
 
 
         if (
@@ -160,8 +204,8 @@ function findMostVisibleVideo() {
 
 
     /*
-    Só troca quando pelo menos
-    35% do vídeo estiver visível.
+       Só troca quando pelo menos
+       35% do vídeo estiver visível.
     */
 
     if (
@@ -180,8 +224,8 @@ function findMostVisibleVideo() {
     } else {
 
         /*
-        Nenhum vídeo suficientemente
-        visível = pausa.
+           Nenhum vídeo suficientemente
+           visível = pausa.
         */
 
         if (activeVideo) {
@@ -235,46 +279,6 @@ window.addEventListener(
 
 
 /* =========================================
-   ATIVAR / DESATIVAR SOM
-========================================= */
-
-soundButtons.forEach((button) => {
-
-    button.addEventListener(
-        "click",
-        () => {
-
-            soundEnabled =
-                !soundEnabled;
-
-
-            /*
-            Se temos um vídeo ativo,
-            muda o som imediatamente.
-            */
-
-            if (activeVideo) {
-
-                activeVideo.muted =
-                    !soundEnabled;
-
-
-                activeVideo
-                    .play()
-                    .catch(() => {});
-
-            }
-
-
-            updateSoundButtons();
-
-        }
-    );
-
-});
-
-
-/* =========================================
    PAUSA SE SAIR DA ABA
 ========================================= */
 
@@ -304,12 +308,19 @@ document.addEventListener(
    INÍCIO
 ========================================= */
 
-updateSoundButtons();
-
-
 window.addEventListener(
     "load",
     () => {
+
+        /*
+           Inicialmente os vídeos ficam
+           preparados para autoplay mudo.
+        */
+
+        videos.forEach((video) => {
+            video.muted = true;
+        });
+
 
         setTimeout(
             findMostVisibleVideo,
