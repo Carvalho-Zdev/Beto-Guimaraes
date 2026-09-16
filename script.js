@@ -51,6 +51,12 @@ function activateVideo(video) {
 
     activeVideo = video;
 
+    video.muted = !soundEnabled;
+
+if (soundEnabled) {
+    video.volume = 1;
+}
+
 
     /*
        Antes da primeira interação:
@@ -61,6 +67,9 @@ function activateVideo(video) {
     */
 
     video.muted = !soundEnabled;
+    if (soundEnabled) {
+    video.volume = 1;
+}
 
 
     const promise = video.play();
@@ -76,9 +85,10 @@ function activateVideo(video) {
                tenta iniciar mudo.
             */
 
-            video.muted = true;
-
-            video.play().catch(() => {});
+             if (!soundEnabled) {
+        video.muted = true;
+        video.play().catch(() => {});
+    }
 
         });
 
@@ -90,26 +100,46 @@ function activateVideo(video) {
 /* =========================================
    PRIMEIRO TOQUE / CLIQUE LIBERA O SOM
 ========================================= */
-
 function unlockSound() {
 
     if (soundEnabled) return;
 
     soundEnabled = true;
 
+    /*
+       O toque no botão libera todos os vídeos
+       para reprodução com áudio no celular.
+    */
+
+    videos.forEach((video) => {
+        video.muted = false;
+        video.volume = 1;
+
+        const playPromise = video.play();
+
+        if (playPromise !== undefined) {
+            playPromise
+                .then(() => {
+                    if (video !== activeVideo) {
+                        video.pause();
+                    }
+                })
+                .catch(() => {});
+        }
+    });
+
+    /*
+       Mantém o vídeo atual tocando com som.
+    */
+
     if (activeVideo) {
-
         activeVideo.muted = false;
-
-        activeVideo
-            .play()
-            .catch(() => {});
-
+        activeVideo.volume = 1;
+        activeVideo.play().catch(() => {});
     }
 
     /*
-       Esconde o botão depois
-       que o áudio for liberado.
+       Esconde o botão.
     */
 
     if (audioUnlockButton) {
@@ -119,9 +149,7 @@ function unlockSound() {
         setTimeout(() => {
             audioUnlockButton.style.display = "none";
         }, 300);
-
     }
-
 }
 
 /*
